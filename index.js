@@ -4,6 +4,9 @@ require('express-async-error')
 // require express
 const express = require('express')
 
+// require main router
+const { mainRouter } = require('./routes/main.js')
+
 // require middleware
 const notFound = require('./middleware/not_found.js')
 const errorHandler = require('./middleware/error_handler.js')
@@ -14,10 +17,16 @@ const app = express()
 // get port from config file 
 const { port } = require('./config.json')
 
-// basic get method
-app.get('/', (req, res) => {
-  res.send(`<h2>BASIC JWT</h2>`)
-})
+// // basic get method
+// app.get('/', (req, res) => {
+//   res.send(`<h2>BASIC JWT</h2>`)
+// })
+
+app.use(express.static('./public'))
+app.use(express.json())
+
+// use main router
+app.use('/api/v1', mainRouter)
 
 // use middleware
 app.use(notFound)

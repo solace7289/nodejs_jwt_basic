@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken')
 
 // require JWT_SECRET
 const { JWT_SECRET } = require('../config.json')
-const e = require('express')
+const express = require('express')
+
+const { Unauthorized } = require('../errors')
 
 // method auth
 const authenticationMiddleware = (req, res, next) => {
@@ -15,6 +17,7 @@ const authenticationMiddleware = (req, res, next) => {
     if (!headerToken || !headerToken.startsWith('Bearer ')) {
         // throw exception
         console.log('Error at token validate!')
+        throw new Unauthorized('No token provied by user!!!')
     }
 
     // split header to get token only
